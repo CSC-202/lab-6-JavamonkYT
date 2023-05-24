@@ -1,5 +1,5 @@
 # d_analysis.py
-## author - nick s.
+## author - Gregory L.
 
 # IMPORTS
 import time
@@ -15,8 +15,6 @@ import b_recursive_stack as Stack_rec
 import c_iterative_queue as Queue_iter
 import c_recursive_queue as Queue_rec
 
-# PLOT CONFIG
-plt.suptitle('Stapleton - Lab 6 Analysis')
 
 # CONSTANTS
 N_TRIALS = 100  # TODO run on 20 trials
@@ -138,10 +136,10 @@ def experiment_stack_iter_pop(n_trials, n_elements):
             stack = Stack_iter.push(stack, i)
 
         # time the test
-        t_0 = time.process_time_ns()
+        t_0 = time.perf_counter_ns()
         for i in range(n):
             (_, stack) = Stack_iter.pop(stack)
-        t_1 = time.process_time_ns()
+        t_1 = time.perf_counter_ns()
         return t_1 - t_0
 
     for _ in range(n_trials):
@@ -182,10 +180,10 @@ def experiment_stack_rec_pop(n_trials, n_elements):
             stack = Stack_rec.push(stack, i)
 
         # time the test
-        t_0 = time.process_time_ns()
+        t_0 = time.perf_counter_ns()
         for i in range(n):
             (_, stack) = Stack_rec.pop(stack)
-        t_1 = time.process_time_ns()
+        t_1 = time.perf_counter_ns()
         return t_1 - t_0
 
     for _ in range(n_trials):
@@ -204,10 +202,10 @@ def experiment_queue_iter_enqueue(n_trials, n_elements):
         queue = Queue_iter.initialize()
 
         # time the test
-        t_0 = time.process_time_ns()
+        t_0 = time.perf_counter_ns()
         for i in range(n):
             queue = Queue_iter.enqueue(queue, i)
-        t_1 = time.process_time_ns()
+        t_1 = time.perf_counter_ns()
         return t_1 - t_0
 
     for _ in range(n_trials):
@@ -227,10 +225,10 @@ def experiment_queue_iter_dequeue(n_trials, n_elements):
             queue = Queue_iter.enqueue(queue, i)
 
         # time the test
-        t_0 = time.process_time_ns()
+        t_0 = time.perf_counter_ns()
         for i in range(n):
             (_, queue) = Queue_iter.dequeue(queue)
-        t_1 = time.process_time_ns()
+        t_1 = time.perf_counter_ns()
         return t_1 - t_0
 
     for _ in range(n_trials):
@@ -248,10 +246,10 @@ def experiment_queue_rec_enqueue(n_trials, n_elements):
         queue = Queue_rec.initialize()
 
         # time the test
-        t_0 = time.process_time_ns()
+        t_0 = time.perf_counter_ns()
         for i in range(n):
             queue = Queue_rec.enqueue(queue, i)
-        t_1 = time.process_time_ns()
+        t_1 = time.perf_counter_ns()
         return t_1 - t_0
 
     for _ in range(n_trials):
@@ -271,10 +269,10 @@ def experiment_queue_rec_dequeue(n_trials, n_elements):
             queue = Queue_rec.enqueue(queue, i)
 
         # time the test
-        t_0 = time.process_time_ns()
+        t_0 = time.perf_counter_ns()
         for i in range(n):
             (_, queue) = Queue_rec.dequeue(queue)
-        t_1 = time.process_time_ns()
+        t_1 = time.perf_counter_ns()
         return t_1 - t_0
 
     for _ in range(n_trials):
@@ -313,15 +311,32 @@ for experiment in RESULTS:
     RESULTS[experiment] = RESULTS[experiment] / norm
 
 # YOUR CODE GOES BELOW
-## LIST
+
+x = [0,1]
+numbers = list(RESULTS.values())
+names = list(RESULTS.keys())
+figure, axes = plt.subplots(1,3)
+plt.suptitle("Leathrum - Lab 6 Analysis")
+for plots in range(3):
+    axes[plots].set_yticks(ticks=[])
+    axes[plots].set_xticks(ticks=[])
+structures = ["List", "Stack", "Queue"]
 
 
-## STACK
+##All the graphs at once
+for structure in range(3):
+    axes[structure].bar(0, numbers[4*(structure)+2], width=0.8) #Recursive back/push/enq
+    axes[structure].bar(1, numbers[4*(structure)+3], width=0.8) #Recursive front/pop/deq
+    axes[structure].bar(0, numbers[4*(structure)], width=0.5) #Iterative back/push/enq
+    axes[structure].bar(1, numbers[4*(structure)+1], width=0.5) #Iterative front/pop/deq
+    axes[structure].legend([names[4*(structure) + 2], names[4*(structure) + 3], names[4*(structure)], names[4*(structure) + 1]])
+    axes[structure].set_xlabel(structures[structure])
+
+#RESULTS.keys gets all the names!
 
 
-## QUEUE
+
 
 
 ## SAVE FIGURE
-plt.savefig('./figs/stapleton_lab6_analysis.png')
-plt.show()
+plt.savefig('C:/Users/grego/Desktop/CalPoly_Senior/CS202/lab-6-nhstaple/figs/leathrum_lab6_analysis.png')
